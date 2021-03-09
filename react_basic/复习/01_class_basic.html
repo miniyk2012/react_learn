@@ -45,6 +45,31 @@
         console.log(`p.a=${p.a}, Personp.demo=${Person.demo}`);
         console.log(`p2.a=${p2.a}, Person.demo=${Person.demo}`);
 
+        class Car {
+            constructor(brand, price)
+            {
+                this.brand = brand;
+                this.price = price;
+            }
+            wheel = 4;
+            // 箭头函数能够记住this是Car的实例.
+            run = () => {
+                console.log(`run ${this.brand} ${this.price}, has ${this.wheel} wheels`);
+            }
+            // 不用箭头, 则必须在点前面用实例来调用, 否则就会无法得到this.
+            speed() {
+                console.log(`speed ${this.brand} ${this.price}, has ${this.wheel} wheels`); 
+            }
+
+        }
+        const c = new Car('BMW', 400);
+        c.run();
+        c.speed();
+        method1 = c.run;
+        method2 = c.speed;
+        method1();  // run BMW 400, has 4 wheels
+        method2();  // Uncaught TypeError: Cannot read property 'brand' of undefined
+
     </script>
 </body>
 

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <id id="test"></id>
+    <script src="../js/react.development.js" type="text/javascript"></script>
+    <script src="../js/react-dom.development.js" type="text/javascript"></script>
+    <script src="../js/babel.min.js" type="text/javascript"></script>
+    <script type="text/babel">
+    class Weather extends React.Component {
+        constructor(props) {
+            console.log('constructor');
+            super(props);
+            this.state = {isHot: false, wind: '微风'};
+            this.changeWeather = this.changeWeather.bind(this);
+        }
+        render() {
+            console.log('render');
+            var {isHot} = this.state;
+            return <h1 onClick={this.changeWeather}>天气{isHot? '炎热' : '凉爽'}, {this.state.wind}</h1>
+        }
+
+        changeWeather() {
+            console.log('changeWeather');
+            console.log(this);
+            const {isHot} = this.state;
+            //严重注意：状态必须通过setState进行更新,且更新是一种合并，不是替换。
+            this.setState({isHot: !isHot});
+            //严重注意：状态(state)不可直接更改，下面这行就是直接更改！！！
+            // this.state.isHot = !isHot;
+            console.log(this.state.isHot);
+        }
+    }
+    ReactDOM.render(<Weather/>, document.getElementById('test'));
+    </script>
+</body>
+</html>
