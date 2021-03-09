@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        function makePerson(first, last) {
+            return {
+                first: first,
+                last: last,
+                fullName: function () {
+                    // 当使用在函数中时，this 指代当前的对象，也就是调用了函数的对象。
+                    // 如果在一个对象上使用点或者方括号来访问属性或方法，这个对象就成了 this
+                    console.log(this);
+                    return this.first + ' ' + this.last;
+                },
+                fullNameReversed: function () {
+                    return this.last + ', ' + this.first;
+                }
+            }
+        }
+        s = makePerson("Simon", "Willison");
+        console.log(s.fullName()); // "Simon Willison"
+        console.log(s.fullNameReversed()); // Willison, Simon
+        console.log('-------------');
+        // 如果并没有使用“点”运算符调用某个对象，那么 this 将指向全局对象（global object）。这是一个经常出错的地方。例如：
+        s2 = makePerson("Simon2", "Willison");
+        var fullName = s2.fullName;
+        console.log(fullName()); // undefined undefined
+        console.log('-------------');
+
+        // 引入了另外一个关键字：new，它和 this 密切相关。
+        // 它的作用是创建一个崭新的空对象，然后使用指向那个对象的 this 调用特定的函数
+        function Person3(first, last) {
+            this.first = first;
+            this.last = last;
+            this.fullName = function () {
+                console.log(this);
+                return this.first + ' ' + this.last;
+            }
+            this.fullNameReversed = function () {
+                return this.last + ', ' + this.first;
+            }
+        }
+        var s3 = new Person3("Simon3", "Willison");
+        console.log(s3.fullName());
+        console.log('------------');
+        function personFullName() {
+            return this.first + ' ' + this.last;
+        }
+        function personFullNameReversed() {
+            return this.last + ', ' + this.first;
+        }
+        function Person4(first, last) {
+            this.first = first;
+            this.last = last;
+            this.fullName = personFullName;
+            this.fullNameReversed = personFullNameReversed;
+        }
+        var s4 = new Person4("Simon4", "Willison");
+        console.log(s4.fullName());
+        console.log('------------');
+        /*
+            Person.prototype 是一个可以被Person的所有实例共享的对象。
+            它是一个名叫原型链（prototype chain）的查询链的一部分：
+            当你试图访问 Person 某个实例（例如上个例子中的s）一个没有定义的属性时，
+            解释器会首先检查这个 Person.prototype 来判断是否存在这样一个属性 
+        */
+        function Person5(first, last) {
+            this.first = first;
+            this.last = last;
+        }
+        Person5.prototype.fullName = function () {
+            return this.first + ' ' + this.last;
+        }
+        Person5.prototype.fullNameReversed = function () {
+            return this.last + ', ' + this.first;
+        }
+        var s5 = new Person5("Simon5", "Willison");
+        console.log(s5.fullName());
+        console.log('------------');
+        // 
+        s5_1 = new Person5("Simon5-1", "Willison");
+        // s.firstNameCaps();  // TypeError on line 1: s.firstNameCaps is not a function
+
+        Person5.prototype.firstNameCaps = function () {
+            return this.first.toUpperCase()
+        }
+        console.log(s5_1.firstNameCaps()); // SIMON
+    </script>
+</body>
+
+</html>

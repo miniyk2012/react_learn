@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=
+    , initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        class Person {
+            constructor(name, age) {
+                this.name = name;
+                this.age = age;
+            }
+            // 实例属性
+            a = 1;
+            // 类的静态属性
+            static demo = 100;
+            speak() {
+                console.log(`我名字叫${this.name}, 我今年${this.age}岁`);
+            }
+        }
+        class Student extends Person {
+            constructor(name, age, grade) {
+                super(name, age);
+                this.grade = grade;
+            }
+            speak() {
+                console.log(`我名字叫${this.name}, 我今年${this.age}岁, 我得了${this.grade}分`);
+            }
+        }
+        const p = new Person('小明', 14);
+        const s = new Student('杨恺', 16, 100);
+        console.log(p);
+        console.log(s);
+        p.speak();
+        s.speak();
+        p.a += 1;
+        Person.demo += 1;
+        const p2 = new Person('小光', 24); 
+        console.log(`p.a=${p.a}, Personp.demo=${Person.demo}`);
+        console.log(`p2.a=${p2.a}, Person.demo=${Person.demo}`);
+
+    </script>
+</body>
+
+</html>

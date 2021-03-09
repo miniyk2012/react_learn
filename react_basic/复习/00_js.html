@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script type="text/javascript">
+        function Person(name, age) {
+            console.log("this在不同调用方式下的含义不同:", this);
+            this.name = name;
+            this.age = age;
+        }
+
+        // 定义一个对象
+        var You = new Person('You', 24);
+        // 我们创建了一个新的 Person，名称是 "You"
+        // ("You" 是第一个参数, 24 是第二个参数..)
+        Person('11', '23');
+
+
+        function add(x, y) {
+            var total = x + y;
+            return total;
+        }
+        // 已命名的参数更像是一个指示而没有其他作用。如果调用函数时没有提供足够的参数，缺少的参数会被 undefined 替代。
+        add(); // NaN
+
+        // 还可以传入多于函数本身需要参数个数的参数：
+        add(2, 3, 4); // 5
+        // 将前两个值相加，4 被忽略了
+        function avg(...args) {
+            var sum = 0;
+            for (let value of args) {
+                sum += value;
+            }
+            return sum / args.length;
+        }
+        console.log(avg(2, 3, 4, 5)); // 3.5
+        // 传给 apply() 的第二个参数是一个数组，它将被当作 avg() 的参数列表使用，至于第一个参数 null，我们将在后面讨论。这也正说明了一个事实——函数也是对象。
+        console.log(avg.apply(null, [2, 3, 4, 5])); // 3.5
+        // 通过使用展开语法，你也可以获得同样的效果。
+        console.log(avg(...[2, 3, 4, 5])); // 3.5
+        console.log('------------');
+        // apply() 的第一个参数应该是一个被当作 this 来看待的对象, 以下代码模拟了new语法
+        function trivialNew(constructor, ...args) {
+            var o = {}; // 创建一个对象
+            constructor.apply(o, args);
+            return o;
+        }
+        function Person6(name, age) {
+            this.name = name;
+            this.age = age;
+            this.fullName = function () {
+                console.log(this);
+                console.log(this.name + ' ' + this.age);
+            }
+        }
+        const p6 = trivialNew(Person6, 'yang', 'kai');
+        p6.fullName();
+        console.log('----------------');
+        // apply() 有一个姐妹函数，名叫 call，它也可以允许你设置 this，
+        // 但它带有一个扩展的参数列表而不是一个数组。
+        function lastNameCaps() {
+            return this.name.toUpperCase();
+        }
+        var s = new Person6("Simon", "Willison");
+        console.log(lastNameCaps.call(s));
+        console.log(lastNameCaps.apply(s));
+        // 和以下方式等价
+        s.lastNameCaps = lastNameCaps;
+        console.log(s.lastNameCaps());
+    </script>
+</body>
+
+</html>
