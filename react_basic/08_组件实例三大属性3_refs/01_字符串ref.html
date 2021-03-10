@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="test1"></div>
+
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <script type="text/babel">
+        class Demo extends React.Component {
+            render() {
+                return (
+                    <div>
+                        <input ref="input1" type="text" placeholder="点击出弹窗" />
+                        <button onClick={this.showData1}>点击我</button>
+                        <input ref="input2" type="text" onBlur={this.showData2} placeholder="失焦出弹窗" />
+                    </div>
+                );
+            }
+
+            showData1 = () => {
+                console.log(this);
+                // input1是真实DOM
+                const { input1 } = this.refs;
+                alert(input1.value);
+            }
+
+            showData2 = () => {
+                const { input2 } = this.refs;
+                alert(input2.value);
+            }
+        }
+        ReactDOM.render(<Demo a="1" b="2"/>, document.getElementById('test1'));
+    </script>
+</body>
+
+</html>

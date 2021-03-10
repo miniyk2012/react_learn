@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="test"></div>
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <script type="text/babel">
+        class Login extends React.Component {
+            name = React.createRef()
+            password = React.createRef()
+            render() {
+                return (
+                    <div>
+                        <input ref={this.name} type="text" placeholder="用户名" />
+                        <input ref={this.password} type="text" placeholder="密码" />
+                        <button onClick={this.login}>点击</button>
+                        <form action="http://www.baidu.com" method="get" onSubmit={this.handleSubmit}>
+                            <input ref={c => this.name1 = c} type="text" placeholder="用户名" name="name"/>
+                            <input ref={c => this.password1 = c} type="text" placeholder="密码" name="password"/>
+                            <button>点击</button>
+                        </form>
+                    </div>
+                );
+            }
+            login = () => {
+                alert(this.name.current.value + ' ' + this.password.current.value);
+            }
+
+            handleSubmit = (event) => {
+                event.preventDefault();  // 阻止表单提交
+                const {name1, password1} = this;
+                alert(`用户名=${name1.value}, 密码=${password1.value}`);
+            }
+        }
+        ReactDOM.render(<Login />, document.getElementById('test'));
+    </script>
+</body>
+
+</html>
