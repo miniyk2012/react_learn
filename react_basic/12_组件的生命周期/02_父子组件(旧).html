@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="test"></div>
+    <script type="text/javascript" src="../js/react.development.js"></script>
+    <script type="text/javascript" src="../js/react-dom.development.js"></script>
+    <script type="text/javascript" src="../js/babel.min.js"></script>
+    <script type="text/babel">
+    /*
+        componentWillReceiveProps: 初始化render时不执行, 父组件render时
+    */
+        class A extends React.Component {
+            state = { carName: '奥迪' }
+            constructor(props) {
+                console.log('A---constructor');
+                super(props);
+            }
+            render() {
+                console.log('A---render');
+                return (
+                    <div>
+                        <div>A</div>
+                        <button onClick={this.changeCar}>我要换车啦</button>
+                        <div id='testB'>
+                            <B car={this.state.carName} />
+                        </div>
+                        <button onClick={this.die}>删除A</button>
+                    </div>
+                )
+            }
+
+            componentWillReceiveProps(props) {
+                console.log('A---this.props', this.props);
+                console.log('A---componentWillReceiveProps', props);
+            }
+
+            componentWillMount() {
+                console.log('A---componentWillMount');
+            }
+
+            componentDidMount() {
+                console.log('A---componentDidMount');
+            }
+
+            componentWillUnmount() {
+                console.log('A---componentWillUnmount');
+            }
+
+            shouldComponentUpdate() {
+                console.log('A---shouldComponentUpdate');
+                return true;
+            }
+
+            componentWillUpdate() {
+                console.log('A---componentWillUpdate');
+            }
+
+            componentDidUpdate() {
+                console.log('A---componentDidUpdate');
+            }
+
+            changeCar = () => {
+                this.setState({ carName: '奔驰' });
+            }
+
+            die = () => {
+                ReactDOM.unmountComponentAtNode(document.getElementById('test'));
+            }
+        }
+
+        class B extends React.Component {
+            constructor(props) {
+                console.log('B---constructor');
+                super(props);
+            }
+            render() {
+                console.log('B---render');
+                return (
+                    <div>
+                        <div>B, 我的车子叫{this.props.car}</div>
+                    </div>
+                )
+            }
+
+            componentWillReceiveProps(props) { 
+                console.log('B---this.props', this.props);
+                console.log('B---componentWillReceiveProps', props);
+            }
+
+            componentWillMount() {
+                console.log('B---componentWillMount');
+            }
+
+            componentDidMount() {
+                console.log('B---componentDidMount');
+            }
+
+            componentWillUnmount() {
+                console.log('B---componentWillUnmount');
+            }
+
+            shouldComponentUpdate() {
+                console.log('B---this.props', this.props);
+                console.log('B---shouldComponentUpdate');
+                return true;
+            }
+
+            componentWillUpdate() {
+                console.log('B---this.props', this.props);
+                console.log('B---componentWillUpdate');
+            }
+
+            componentDidUpdate() {
+                console.log('B---this.props', this.props);
+                console.log('B---componentDidUpdate');
+            }
+
+        }
+
+        ReactDOM.render(<A />, document.getElementById('test'));
+    </script>
+</body>
+
+</html>
