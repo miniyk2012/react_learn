@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="test"></div>
+
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/17.0.1/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM -->
+    <script type="text/javascript" src="../js/17.0.1/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script type="text/javascript" src="../js/17.0.1/babel.min.js"></script>
+
+    <script type="text/babel">
+        class Timer extends React.Component {
+            state = { time: new Date() }
+            componentDidMount() {
+                setInterval(() => {
+                    this.setState({ time: new Date() });
+                }, 100);
+            }
+            render() {
+                return (
+                    <div>
+                        <h1>Hello</h1>
+                        <input type="text" />
+                        <div>当前时间是: {this.state.time.toTimeString()}<input type="password"></input></div>
+                    </div>
+                );
+            }
+        }
+        ReactDOM.render(<Timer/>, document.getElementById('test'));
+    </script>
+</body>
+
+</html>

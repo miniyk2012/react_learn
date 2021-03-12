@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="test"></div>
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/17.0.1/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM -->
+    <script type="text/javascript" src="../js/17.0.1/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script type="text/javascript" src="../js/17.0.1/babel.min.js"></script>
+
+    <script type="text/babel">
+        class Students extends React.Component {
+            state = {
+                students: [
+                    { id: 1, name: '小王', age: 10 },
+                    { id: 2, name: '小杨', age: 20 },
+                ]
+            }
+
+            render() {
+                return (
+                    <div>
+                        <button onClick={this.addStudent} type="text">增加一个学生</button>
+                        {this.state.students.map((s)=>{
+                            return <li key={s.id}>姓名:{s.name}, 年龄:{s.age} <input type="text"/></li>
+                        })}
+                    </div>
+                )
+            }
+
+            addStudent = () => {
+                const num =this.state.students.length;  
+                const newStudent = { id: num + 1, name: '小李'+(num-1) , age: 29+num }
+                this.setState({ students: [newStudent, ...this.state.students] })
+            }
+        }
+        ReactDOM.render(<Students />, document.getElementById('test'));
+    </script>
+</body>
+
+</html>

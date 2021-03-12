@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .list {
+            width: 200px;
+            height: 150px;
+            background-color: skyblue;
+            overflow: auto;
+        }
+
+        .news {
+            height: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 准备好一个“容器” -->
+    <div id="test"></div>
+
+    <!-- 引入react核心库 -->
+    <script type="text/javascript" src="../js/17.0.1/react.development.js"></script>
+    <!-- 引入react-dom，用于支持react操作DOM -->
+    <script type="text/javascript" src="../js/17.0.1/react-dom.development.js"></script>
+    <!-- 引入babel，用于将jsx转为js -->
+    <script type="text/javascript" src="../js/17.0.1/babel.min.js"></script>
+    <script type="text/babel">
+        class NewsList extends React.Component {
+            state = { newsArr: [] }
+            listRef = React.createRef()
+            componentDidMount() {
+                setInterval(() => {
+                    const { newsArr } = this.state;
+                    const news = '新闻' + (newsArr.length + 1);
+                    this.setState({ newsArr: [news, ...newsArr] });
+                }, 1000);
+            }
+            getSnapshotBeforeUpdate(prevProps, prevState) {
+                // 捕获滚动​​位置以便我们稍后调整滚动位置。
+                if (prevState.newsArr.length < this.state.newsArr.length) {
+                    const list = this.listRef.current;
+                    console.log('before:', list.scrollHeight);
+                    return list.scrollHeight - list.scrollTop;
+                }
+                return null;
+
+            }
+            componentDidUpdate(prevProps, prevState, snapshot) {
+                if (snapshot !== null) {
+                    const list = this.listRef.current;
+                    console.log('after:', list.scrollHeight);
+                    list.scrollTop = list.scrollHeight - snapshot;
+                }
+            }
+            render() {
+                console.log('render');
+                const { newsArr } = this.state;
+                return (
+                    <div className="list" ref={this.listRef}>
+                        {newsArr.map((news, index) => {
+                            return <div className="news" key={index}>{news}</div>
+                        })}
+                    </div>
+                );
+            }
+        }
+        ReactDOM.render(<NewsList />, document.getElementById('test'));
+    </script>
+</body>
+
+</html>
